@@ -6,9 +6,6 @@
 #define BUFFER_SIZE 1024
 
 
-LL_node test;
-
-
 int main(int argc, char **argv)
 {
 	if (argc != 3)
@@ -45,6 +42,11 @@ int main(int argc, char **argv)
 	{
 		printf("%s\n", buffer);
 	}
+
+
+	LinkedList *test = ll_create();
+
+	printf("LL_node*: %d, int: %d, LinkedList: %d\n", sizeof(LL_node*), sizeof(int), sizeof(LinkedList));
 
 
 	fclose(words_file);

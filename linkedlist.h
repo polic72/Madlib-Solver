@@ -24,12 +24,12 @@ typedef struct LL_node
 
 LinkedList *ll_create();
 
-bool ll_add_beginning(void *object_to_add);
-bool ll_add_end(void *object_to_add);
+bool ll_add_beginning(LinkedList *list, void *object_to_add);
+bool ll_add_end(LinkedList *list, void *object_to_add);
 
-void ll_clear();
-bool ll_remove_beginning();
-bool ll_remove_end();
+void ll_clear(LinkedList *list);
+bool ll_remove_beginning(LinkedList *list);
+bool ll_remove_end(LinkedList *list);
 
 
 #endif //LINKEDLIST_H
