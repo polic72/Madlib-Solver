@@ -46,7 +46,17 @@ int main(int argc, char **argv)
 
 	LinkedList *test = ll_create();
 
-	printf("LL_node*: %d, int: %d, LinkedList: %d\n", sizeof(LL_node*), sizeof(int), sizeof(LinkedList));
+	char *string = "test data";
+
+
+	ll_add_end(test, &string);
+
+	printf("test->size = %d, test->end->data = %s\n", test->size, test->end->data);
+
+
+	ll_add_end(test, &string);
+
+	printf("test->size = %d, test->end->data = %s\n", test->size, test->end->data);
 
 
 	fclose(words_file);
