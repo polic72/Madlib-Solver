@@ -16,7 +16,7 @@ LinkedList *ll_create()
 }
 
 
-bool ll_add_beginning(LinkedList *list, void **object_to_add)
+bool ll_add_beginning(LinkedList *list, void *object_to_add)
 {
 	if (list == NULL)
 	{
@@ -25,11 +25,9 @@ bool ll_add_beginning(LinkedList *list, void **object_to_add)
 
 
 	LL_node *new_node = malloc(sizeof(*new_node));
-	new_node->data = *object_to_add;
+	new_node->data = object_to_add;
 	new_node->left = NULL;
 	new_node->right = NULL;
-
-	*object_to_add = NULL;
 
 
 	if (list->start == NULL)
@@ -52,7 +50,7 @@ bool ll_add_beginning(LinkedList *list, void **object_to_add)
 }
 
 
-bool ll_add_end(LinkedList *list, void **object_to_add)
+bool ll_add_end(LinkedList *list, void *object_to_add)
 {
 	if (list == NULL)
 	{
@@ -61,11 +59,9 @@ bool ll_add_end(LinkedList *list, void **object_to_add)
 
 
 	LL_node *new_node = malloc(sizeof(*new_node));
-	new_node->data = *object_to_add;
+	new_node->data = object_to_add;
 	new_node->left = NULL;
 	new_node->right = NULL;
-
-	*object_to_add = NULL;
 
 
 	if (list->start == NULL)

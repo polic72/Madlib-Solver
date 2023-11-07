@@ -3,7 +3,7 @@
 #include <errno.h>
 #include "linkedlist.h"
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 4096
 
 
 int main(int argc, char **argv)
@@ -40,23 +40,11 @@ int main(int argc, char **argv)
 
 	while (fgets(buffer, BUFFER_SIZE, words_file))
 	{
-		printf("%s\n", buffer);
+		printf("%s", buffer);
 	}
 
 
-	LinkedList *test = ll_create();
-
-	char *string = "test data";
-
-
-	ll_add_end(test, &string);
-
-	printf("test->size = %d, test->end->data = %s\n", test->size, test->end->data);
-
-
-	ll_add_end(test, &string);
-
-	printf("test->size = %d, test->end->data = %s\n", test->size, test->end->data);
+	//
 
 
 	fclose(words_file);
