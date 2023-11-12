@@ -36,11 +36,18 @@ int main(int argc, char **argv)
 	}
 
 
-	char buffer[BUFFER_SIZE];
+	LinkedList *word_types = ll_create();
 
-	while (fgets(buffer, BUFFER_SIZE, words_file))
+	LinkedList *word_holders = ll_create();
+
+
+	char line_buffer[BUFFER_SIZE];
+
+	while (fgets(line_buffer, BUFFER_SIZE, words_file))
 	{
-		printf("%s", buffer);
+		printf("%s", line_buffer);
+
+		//Scan through the string, look for the ':', and apply that to a buffer, and send that buffer to the word_types LinkedList.
 	}
 
 
