@@ -1,2 +1,3 @@
-Maybe this just needs data?
-Yeah, something like that.
+adjective:green
+adjective:weird
+noun:grape
