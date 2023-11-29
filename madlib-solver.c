@@ -46,8 +46,9 @@ int main(int argc, char **argv)
 
 
 	//Make a list for the TypeWords instead and go from there.
-	LinkedList *type_list = ll_create();
-	LinkedList *word_list = ll_create();
+//	LinkedList *type_list = ll_create();
+//	LinkedList *word_list = ll_create();
+	LinkedList *TypeWord_list = ll_create();
 
 	char line_buffer[BUFFER_SIZE];
 
@@ -56,7 +57,7 @@ int main(int argc, char **argv)
 
 	while (fgets(line_buffer, BUFFER_SIZE, words_file))
 	{
-		int i;
+		unsigned int i;
 		for (i = 0; i < BUFFER_SIZE; ++i)
 		{
 			if (line_buffer[i] == ':')
@@ -75,7 +76,7 @@ int main(int argc, char **argv)
 		//i++;
 		//strncpy(word_buffer, line_buffer + i, strlen(line_buffer + i) - 1);	//The " - 1" is just to get rid of the newline char.
 
-		int colon_pos = i;
+		unsigned int colon_pos = i;
 		for (++i; i < BUFFER_SIZE; ++i)
 		{
 			if (line_buffer[i] == '\r' || line_buffer[i] == '\n')
@@ -90,20 +91,44 @@ int main(int argc, char **argv)
 		printf("type_buffer: \"%s\", word_buffer: \"%s\"\n", type_buffer, word_buffer);
 
 
-		int type_len = colon_pos - 1;
-		int word_len = strlen(word_buffer);
+		unsigned int type_len = colon_pos - 1;
+		unsigned int word_len = strlen(word_buffer);
 
 
 		char *temp_obj = malloc(type_len);
 		memcpy(temp_obj, type_buffer, type_len);
 
-		ll_add_end(type_list, temp_obj);
+//		ll_add_end(type_list, temp_obj);
+
+		bool found = false;
+
+		LL_node *current_node = TypeWord_list->start;
+
+		for (i = 0; i < TypeWord_list->size; ++i)
+		{
+			if (strcmp(temp_obj, current_node->data->type) == 0)
+			{
+				found = true;
+				break;
+			}
+
+			current_node = current_node->right;
+		}
+
+
+		if (!found)
+		{
+			TypeWords new_node = malloc(sizeof(TypeWords));
+			new_node->type = temp_obj;	//This will be a memory leak without a dispose method. We'll get to it...
+
+			ll_add_end(TypeWord_list, temp_obj);
+		}
 
 
 		temp_obj = malloc(word_len);	//This is ok because we no longer own the memory.
 		memcpy(temp_obj, word_buffer, word_len);
 
-		ll_add_end(word_list, temp_obj);
+//		ll_add_end(word_list, temp_obj);
 
 
 		memset(type_buffer, 0, BUFFER_SIZE);
@@ -111,6 +136,7 @@ int main(int argc, char **argv)
 	}
 
 
+	//
 
 
 	fclose(words_file);

@@ -10,7 +10,7 @@ typedef struct LinkedList
 {
 	struct LL_node *start;
 	struct LL_node *end;
-	int size;
+	unsigned int size;
 }LinkedList;
 
 
