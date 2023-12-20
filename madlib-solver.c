@@ -88,17 +88,16 @@ int main(int argc, char **argv)
 
 
 		//printf("line_buffer: \"%s\", type_buffer: \"%s\", word_buffer: \"%s\"\n", line_buffer, type_buffer, word_buffer);
-		printf("type_buffer: \"%s\", word_buffer: \"%s\"\n", type_buffer, word_buffer);
+		//printf("type_buffer: \"%s\", word_buffer: \"%s\"\n", type_buffer, word_buffer);
 
 
-		unsigned int type_len = colon_pos - 1;
+		unsigned int type_len = colon_pos;
 		unsigned int word_len = strlen(word_buffer);
 
 
 		char *temp_obj = malloc(type_len);
 		memcpy(temp_obj, type_buffer, type_len);
 
-//		ll_add_end(type_list, temp_obj);
 
 		bool found = false;
 
@@ -106,7 +105,7 @@ int main(int argc, char **argv)
 
 		for (i = 0; i < TypeWord_list->size; ++i)
 		{
-			if (strcmp(temp_obj, current_node->data->type) == 0)
+			if (strcmp(temp_obj, ((TypeWords*)current_node->data)->type) == 0)
 			{
 				found = true;
 				break;
@@ -118,17 +117,19 @@ int main(int argc, char **argv)
 
 		if (!found)
 		{
-			TypeWords new_node = malloc(sizeof(TypeWords));
+			TypeWords *new_node = malloc(sizeof(TypeWords));
 			new_node->type = temp_obj;	//This will be a memory leak without a dispose method. We'll get to it...
+			new_node->words = malloc(sizeof(LinkedList));
 
-			ll_add_end(TypeWord_list, temp_obj);
+			ll_add_end(TypeWord_list, new_node);
+			current_node = TypeWord_list->end;
 		}
 
 
-		temp_obj = malloc(word_len);	//This is ok because we no longer own the memory.
-		memcpy(temp_obj, word_buffer, word_len);
+		char *temp_obj2 = malloc(word_len);	//This is ok because we no longer own the memory.
+		memcpy(temp_obj2, word_buffer, word_len);
 
-//		ll_add_end(word_list, temp_obj);
+		ll_add_end(((TypeWords*)current_node->data)->words, temp_obj2);
 
 
 		memset(type_buffer, 0, BUFFER_SIZE);
@@ -136,7 +137,25 @@ int main(int argc, char **argv)
 	}
 
 
-	//
+	//Just printing out what we have now.
+	LL_node *current_node = TypeWord_list->start;
+
+	for (unsigned int i = 0; i < TypeWord_list->size; ++i)
+	{
+		printf("%s:\n", ((TypeWords*)current_node->data)->type);
+
+
+		LL_node *inner_node = ((TypeWords*)current_node->data)->words->start;
+
+		for (unsigned int j = 0; j < ((TypeWords*)current_node->data)->words->size; ++j)
+		{
+			printf("\t%s\n", inner_node->data);
+
+			inner_node = inner_node->right;
+		}
+
+		current_node = current_node->right;
+	}
 
 
 	fclose(words_file);

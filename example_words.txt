@@ -1,3 +1,4 @@
 adjective:weird
 adjective:green
 noun:grape
+adverb:longingly
