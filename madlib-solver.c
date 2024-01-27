@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
 
 #include "linkedlist.h"
 
@@ -134,6 +135,18 @@ int main(int argc, char **argv)
 
 		memset(type_buffer, 0, BUFFER_SIZE);
 		memset(word_buffer, 0, BUFFER_SIZE);
+	}
+
+
+	srand(time(NULL));
+
+	//char word_buffer[BUFFER_SIZE];
+	char edited_line_buffer[BUFFER_SIZE * 2];
+
+
+	while (fgets(line_buffer, BUFFER_SIZE, madlib_file))
+	{
+		//
 	}
 
 
