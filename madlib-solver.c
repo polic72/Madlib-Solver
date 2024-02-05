@@ -11,168 +11,214 @@
 
 typedef struct TypeWords
 {
-	char *type;
-	LinkedList *words;
+    char *type;
+    LinkedList *words;
 }TypeWords;
 
 
 int main(int argc, char **argv)
 {
-	if (argc != 3)
-	{
-		fprintf(stderr, "usage: %s [words_file] [madlib_file]\n", argv[0]);
+    if (argc != 3)
+    {
+        fprintf(stderr, "usage: %s [words_file] [madlib_file]\n", argv[0]);
 
-		return -1;
-	}
+        return -1;
+    }
 
-	
-	FILE * words_file = fopen(argv[1], "r");
+    
+    FILE * words_file = fopen(argv[1], "r");
 
-	if (words_file == NULL)
-	{
-		fprintf(stderr, "The [%s] file failed to open.\n", argv[1]);
+    if (words_file == NULL)
+    {
+        fprintf(stderr, "The [%s] file failed to open.\n", argv[1]);
 
-		return -2;
-	}
-
-
-	FILE * madlib_file = fopen(argv[2], "r");
-
-	if (madlib_file == NULL)
-	{
-		fprintf(stderr, "The [%s] file failed to open.\n", argv[2]);
-
-		return -3;
-	}
+        return -2;
+    }
 
 
-	//Make a list for the TypeWords instead and go from there.
-//	LinkedList *type_list = ll_create();
-//	LinkedList *word_list = ll_create();
-	LinkedList *TypeWord_list = ll_create();
+    FILE * madlib_file = fopen(argv[2], "r");
 
-	char line_buffer[BUFFER_SIZE];
+    if (madlib_file == NULL)
+    {
+        fprintf(stderr, "The [%s] file failed to open.\n", argv[2]);
 
-	char type_buffer[BUFFER_SIZE];
-	char word_buffer[BUFFER_SIZE];
-
-	while (fgets(line_buffer, BUFFER_SIZE, words_file))
-	{
-		unsigned int i;
-		for (i = 0; i < BUFFER_SIZE; ++i)
-		{
-			if (line_buffer[i] == ':')
-			{
-				strncpy(type_buffer, line_buffer, i);
-				break;
-			}
-		}
-
-		if (i == BUFFER_SIZE - 1)
-		{
-			fprintf(stderr, "The line (%s) was either malformed or the BUFFER_SIZE (%d) was too small for the type.\n", line_buffer, BUFFER_SIZE);
-		}
+        return -3;
+    }
 
 
-		//i++;
-		//strncpy(word_buffer, line_buffer + i, strlen(line_buffer + i) - 1);	//The " - 1" is just to get rid of the newline char.
+    //Make a list for the TypeWords instead and go from there.
+//    LinkedList *type_list = ll_create();
+//    LinkedList *word_list = ll_create();
+    LinkedList *TypeWord_list = ll_create();
 
-		unsigned int colon_pos = i;
-		for (++i; i < BUFFER_SIZE; ++i)
-		{
-			if (line_buffer[i] == '\r' || line_buffer[i] == '\n')
-			{
-				strncpy(word_buffer, line_buffer + colon_pos + 1, i - colon_pos - 1);
-				break;
-			}
-		}
+    char line_buffer[BUFFER_SIZE];
 
+    char type_buffer[BUFFER_SIZE];
+    char word_buffer[BUFFER_SIZE];
 
-		//printf("line_buffer: \"%s\", type_buffer: \"%s\", word_buffer: \"%s\"\n", line_buffer, type_buffer, word_buffer);
-		//printf("type_buffer: \"%s\", word_buffer: \"%s\"\n", type_buffer, word_buffer);
+    while (fgets(line_buffer, BUFFER_SIZE, words_file))
+    {
+        unsigned int i;
+        for (i = 0; i < BUFFER_SIZE; ++i)
+        {
+            if (line_buffer[i] == ':')
+            {
+                strncpy(type_buffer, line_buffer, i);
+                break;
+            }
+        }
 
+        if (i == BUFFER_SIZE - 1)
+        {
+            fprintf(stderr, "The line (%s) was either malformed or the BUFFER_SIZE (%d) was too small for the type.\n", line_buffer, BUFFER_SIZE);
 
-		unsigned int type_len = colon_pos;
-		unsigned int word_len = strlen(word_buffer);
-
-
-		char *temp_obj = malloc(type_len);
-		memcpy(temp_obj, type_buffer, type_len);
-
-
-		bool found = false;
-
-		LL_node *current_node = TypeWord_list->start;
-
-		for (i = 0; i < TypeWord_list->size; ++i)
-		{
-			if (strcmp(temp_obj, ((TypeWords*)current_node->data)->type) == 0)
-			{
-				found = true;
-				break;
-			}
-
-			current_node = current_node->right;
-		}
+            return 1;
+        }
 
 
-		if (!found)
-		{
-			TypeWords *new_node = malloc(sizeof(TypeWords));
-			new_node->type = temp_obj;	//This will be a memory leak without a dispose method. We'll get to it...
-			new_node->words = malloc(sizeof(LinkedList));
+        //i++;
+        //strncpy(word_buffer, line_buffer + i, strlen(line_buffer + i) - 1);    //The " - 1" is just to get rid of the newline char.
 
-			ll_add_end(TypeWord_list, new_node);
-			current_node = TypeWord_list->end;
-		}
-
-
-		char *temp_obj2 = malloc(word_len);	//This is ok because we no longer own the memory.
-		memcpy(temp_obj2, word_buffer, word_len);
-
-		ll_add_end(((TypeWords*)current_node->data)->words, temp_obj2);
+        unsigned int colon_pos = i;
+        for (++i; i < BUFFER_SIZE; ++i)
+        {
+            if (line_buffer[i] == '\r' || line_buffer[i] == '\n')
+            {
+                strncpy(word_buffer, line_buffer + colon_pos + 1, i - colon_pos - 1);
+                break;
+            }
+        }
 
 
-		memset(type_buffer, 0, BUFFER_SIZE);
-		memset(word_buffer, 0, BUFFER_SIZE);
-	}
+        //printf("line_buffer: \"%s\", type_buffer: \"%s\", word_buffer: \"%s\"\n", line_buffer, type_buffer, word_buffer);
+        //printf("type_buffer: \"%s\", word_buffer: \"%s\"\n", type_buffer, word_buffer);
 
 
-	srand(time(NULL));
-
-	//char word_buffer[BUFFER_SIZE];
-	char edited_line_buffer[BUFFER_SIZE * 2];
+        unsigned int type_len = colon_pos;
+        unsigned int word_len = strlen(word_buffer);
 
 
-	while (fgets(line_buffer, BUFFER_SIZE, madlib_file))
-	{
-		//
-	}
+        char *temp_obj = malloc(type_len);
+        memcpy(temp_obj, type_buffer, type_len);
 
 
-	//Just printing out what we have now.
-	LL_node *current_node = TypeWord_list->start;
+        bool found = false;
 
-	for (unsigned int i = 0; i < TypeWord_list->size; ++i)
-	{
-		printf("%s:\n", ((TypeWords*)current_node->data)->type);
+        LL_node *current_node = TypeWord_list->start;
 
+        for (i = 0; i < TypeWord_list->size; ++i)
+        {
+            if (strcmp(temp_obj, ((TypeWords*)current_node->data)->type) == 0)
+            {
+                found = true;
+                break;
+            }
 
-		LL_node *inner_node = ((TypeWords*)current_node->data)->words->start;
-
-		for (unsigned int j = 0; j < ((TypeWords*)current_node->data)->words->size; ++j)
-		{
-			printf("\t%s\n", inner_node->data);
-
-			inner_node = inner_node->right;
-		}
-
-		current_node = current_node->right;
-	}
+            current_node = current_node->right;
+        }
 
 
-	fclose(words_file);
-	fclose(madlib_file);
+        if (!found)
+        {
+            TypeWords *new_node = malloc(sizeof(TypeWords));
+            new_node->type = temp_obj;    //This will be a memory leak without a dispose method. We'll get to it...
+            new_node->words = malloc(sizeof(LinkedList));
 
-	return 0;
+            ll_add_end(TypeWord_list, new_node);
+            current_node = TypeWord_list->end;
+        }
+
+
+        char *temp_obj2 = malloc(word_len);    //This is ok because we no longer own the memory.
+        memcpy(temp_obj2, word_buffer, word_len);
+
+        ll_add_end(((TypeWords*)current_node->data)->words, temp_obj2);
+
+
+        memset(type_buffer, 0, BUFFER_SIZE);
+        memset(word_buffer, 0, BUFFER_SIZE);
+    }
+
+
+    srand(time(NULL));
+
+    //char word_buffer[BUFFER_SIZE];
+    char edited_line_buffer[BUFFER_SIZE * 2];
+
+
+    while (fgets(line_buffer, BUFFER_SIZE, madlib_file))
+    {
+        for (unsigned int i = 0; i < BUFFER_SIZE; ++i)
+        {
+            if (i == BUFFER_SIZE - 1 && line_buffer[i] != '\0')
+            {
+                fprintf(stderr, "The line (%s) was either malformed or the BUFFER_SIZE (%d) was too small for the type.\n", line_buffer, BUFFER_SIZE);
+
+                return 2;
+            }
+
+
+            if (line_buffer[i] == '\0')
+            {
+                break;
+            }
+
+
+            if (line_buffer[i] == '[')
+            {
+                for (; i < BUFFER_SIZE; ++i)
+                {
+                    if (i == BUFFER_SIZE - 1 && line_buffer[i] != '\0')
+                    {
+                        fprintf(stderr, "The line (%s) was either malformed or the BUFFER_SIZE (%d) was too small for the type.\n", 
+                            line_buffer, BUFFER_SIZE);
+
+                        return 2;
+                    }
+
+
+                    if (line_buffer[i] == '\0')
+                    {
+                        break;
+                    }
+
+                    
+                    //
+
+
+                    if (line_buffer[i] == ']')
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+    //Just printing out what we have now.
+    LL_node *current_node = TypeWord_list->start;
+
+    for (unsigned int i = 0; i < TypeWord_list->size; ++i)
+    {
+        printf("%s:\n", ((TypeWords*)current_node->data)->type);
+
+
+        LL_node *inner_node = ((TypeWords*)current_node->data)->words->start;
+
+        for (unsigned int j = 0; j < ((TypeWords*)current_node->data)->words->size; ++j)
+        {
+            printf("\t%s\n", inner_node->data);
+
+            inner_node = inner_node->right;
+        }
+
+        current_node = current_node->right;
+    }
+
+
+    fclose(words_file);
+    fclose(madlib_file);
+
+    return 0;
 }
