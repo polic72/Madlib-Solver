@@ -148,6 +148,8 @@ int main(int argc, char **argv)
 
     while (fgets(line_buffer, BUFFER_SIZE, madlib_file))
     {
+        char replace_key[256];
+        
         for (unsigned int i = 0; i < BUFFER_SIZE; ++i)
         {
             if (i == BUFFER_SIZE - 1 && line_buffer[i] != '\0')
@@ -166,7 +168,9 @@ int main(int argc, char **argv)
 
             if (line_buffer[i] == '[')
             {
-                for (; i < BUFFER_SIZE; ++i)
+                unsigned int first_wordChar_index = i;
+
+                for (i++; i < BUFFER_SIZE; ++i)
                 {
                     if (i == BUFFER_SIZE - 1 && line_buffer[i] != '\0')
                     {
@@ -183,13 +187,27 @@ int main(int argc, char **argv)
                     }
 
                     
-                    //
-
-
                     if (line_buffer[i] == ']')
                     {
+                        replace_key[i - first_wordChar_index] = '\0';
+
                         break;
                     }
+
+                    replace_key[i - first_wordChar_index] = line_buffer[i];
+                }
+            }
+
+
+            LL_node *current_node = TypeWord_list->start;
+
+            while (current_node != NULL)
+            {
+                TypeWords *type_words = current_node->data;
+
+                if (strcmp(type_words->type, replace_key))
+                {
+                    //Place a random word from the node here.
                 }
             }
         }
