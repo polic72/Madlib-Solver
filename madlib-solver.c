@@ -25,7 +25,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    
+
     FILE * words_file = fopen(argv[1], "r");
 
     if (words_file == NULL)
@@ -144,11 +144,17 @@ int main(int argc, char **argv)
 
     //char word_buffer[BUFFER_SIZE];
     char edited_line_buffer[BUFFER_SIZE * 2];
+    unsigned int edited_line_position = 0;
 
 
     while (fgets(line_buffer, BUFFER_SIZE, madlib_file))
     {
         char replace_key[256];
+        for (unsigned int i = 0; i < 256; ++i)
+        {
+            replace_key[i] = 0;
+        }
+
         
         for (unsigned int i = 0; i < BUFFER_SIZE; ++i)
         {
@@ -166,7 +172,7 @@ int main(int argc, char **argv)
             }
 
 
-            if (line_buffer[i] == '[')
+            if (line_buffer[i] == '<')
             {
                 unsigned int first_wordChar_index = i;
 
@@ -187,7 +193,7 @@ int main(int argc, char **argv)
                     }
 
                     
-                    if (line_buffer[i] == ']')
+                    if (line_buffer[i] == '>')
                     {
                         replace_key[i - first_wordChar_index] = '\0';
 
@@ -196,22 +202,47 @@ int main(int argc, char **argv)
 
                     replace_key[i - first_wordChar_index] = line_buffer[i];
                 }
-            }
 
 
-            LL_node *current_node = TypeWord_list->start;
+                LL_node *current_node = TypeWord_list->start;
 
-            while (current_node != NULL)
-            {
-                TypeWords *type_words = current_node->data;
-
-                if (strcmp(type_words->type, replace_key))
+                while (current_node != NULL)
                 {
-                    //Place a random word from the node here.
+                    TypeWords *type_words = current_node->data;
+
+                    if (strcmp(type_words->type, replace_key))
+                    {
+                        //Place a random word from the node here.
+                        int random_word_index = rand() % type_words->words->size;
+
+                        LL_node *working_node = type_words->words->start;
+
+                        for (unsigned int j = 0; j < random_word_index; ++j)
+                        {
+                            working_node = working_node->right;
+                        }
+
+
+                        char *placing_word = working_node->data;
+                        strcpy(edited_line_buffer + edited_line_position, placing_word);
+                        edited_line_position += strlen(placing_word);
+                        //edited_line_buffer[edited_line_position++] = line_buffer[i];
+                    }
+
+
+                    current_node = current_node->right;
                 }
+
+                continue;
             }
+
+
+            edited_line_buffer[edited_line_position++] = line_buffer[i];
+            //printf("%s", edited_line_buffer);
         }
     }
+
+    printf("%s", edited_line_buffer);
 
 
     //Just printing out what we have now.
