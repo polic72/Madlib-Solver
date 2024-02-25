@@ -28,11 +28,13 @@ adverb:longingly
 
 ### Organizing Everything
 As was hopefully evident in the above examples, the word types in the words file should match the word key in the madlib file. Each word of a given type is given the same weight in terms of chances to be used. To change these weights, simply repeat the type/word pair in the file to add weight to it. For example, "pear" will be twice as likely to be chosen for the madlib as "apple" with the following words file:
+```
 ...
 noun:pear
 noun:pear
 noun:apple
 ...
+```
 
 
 ## So Why Did You Do This in C??
