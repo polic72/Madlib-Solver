@@ -8,20 +8,22 @@ As the "usage" (from running with no arguments) implies, you must provide a word
 
 ### Madlib File
 A madlib file is simply a text file that contains word keys to be filled in by the madlib solver. A word key follows the following format:
-"\<token\_name\>"
+`\<token\_name\>`
 
 Here is an example for the the file: "My friend, \<noun\>, is a(n) \<adjective\> \<noun\> when they want to be."
 
 
 ### Word File
 A word file is a structured text file that contains line-separated key/value pairs representing the type of word to replace and the word being placed respectively. A standard pair follows the following format:
-\<type\>:\<word\>
+`\<type\>:\<word\>`
 
 Here is an example for the the file:
+```
 adjective:weird
 adjective:green
 noun:grape
 adverb:longingly
+```
 
 
 ### Organizing Everything
@@ -34,4 +36,4 @@ noun:apple
 
 
 ## So Why Did You Do This in C??
-Well, to be honest...I just wanted to learn C, and this was a problem my girlfriend gave me to solve. I immediately knew it would require some data structures and basic string manipulation to do, which is a real annoying thing to work with in C (compared to other languages), so I knew it would be perfect for a first attempt into relearning C. The reason I used a Linked List instead of an Array List (or "*vector*" as it is known to be called in C/C++) is because it would require me to mess around with structs and pointers just a little more. I am fully aware that the performance is far worse (and my implemenation likely leaks memory like CRAZY thanks to having no dispose function), but it is more educational for me this time around, so yeah, you're gonna have to mad your lib with cache misses and memory leaks...deal with it.
+Well, to be honest...I just wanted to learn C, and this was a problem my girlfriend gave me to solve. I immediately knew it would require some data structures and basic string manipulation to do, which is a real annoying thing to work with in C (compared to other languages), so I knew it would be perfect for a first attempt into relearning C. The reason I used a Linked List instead of an Array List (or "*vector*" as it is known to be called in C/C++) is because it would require me to mess around with structs and pointers just a little more. I am fully aware that the performance is far worse (and my implemenation likely leaks memory like CRAZY thanks to having no dispose function), but it is more educational for me this time around, so yeah, you're gonna have to mad your libs with cache misses and memory leaks...deal with it.
