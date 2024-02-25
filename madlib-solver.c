@@ -174,9 +174,11 @@ int main(int argc, char **argv)
 
             if (line_buffer[i] == '<')
             {
+                i++;
+
                 unsigned int first_wordChar_index = i;
 
-                for (i++; i < BUFFER_SIZE; ++i)
+                for (; i < BUFFER_SIZE; ++i)
                 {
                     if (i == BUFFER_SIZE - 1 && line_buffer[i] != '\0')
                     {
@@ -210,7 +212,7 @@ int main(int argc, char **argv)
                 {
                     TypeWords *type_words = current_node->data;
 
-                    if (strcmp(type_words->type, replace_key))
+                    if (!strcmp(type_words->type, replace_key))
                     {
                         //Place a random word from the node here.
                         int random_word_index = rand() % type_words->words->size;
@@ -224,9 +226,10 @@ int main(int argc, char **argv)
 
 
                         char *placing_word = working_node->data;
+
                         strcpy(edited_line_buffer + edited_line_position, placing_word);
                         edited_line_position += strlen(placing_word);
-                        //edited_line_buffer[edited_line_position++] = line_buffer[i];
+                        break;
                     }
 
 
@@ -238,7 +241,6 @@ int main(int argc, char **argv)
 
 
             edited_line_buffer[edited_line_position++] = line_buffer[i];
-            //printf("%s", edited_line_buffer);
         }
     }
 
@@ -246,24 +248,24 @@ int main(int argc, char **argv)
 
 
     //Just printing out what we have now.
-    LL_node *current_node = TypeWord_list->start;
-
-    for (unsigned int i = 0; i < TypeWord_list->size; ++i)
-    {
-        printf("%s:\n", ((TypeWords*)current_node->data)->type);
-
-
-        LL_node *inner_node = ((TypeWords*)current_node->data)->words->start;
-
-        for (unsigned int j = 0; j < ((TypeWords*)current_node->data)->words->size; ++j)
-        {
-            printf("\t%s\n", inner_node->data);
-
-            inner_node = inner_node->right;
-        }
-
-        current_node = current_node->right;
-    }
+//    LL_node *current_node = TypeWord_list->start;
+//
+//    for (unsigned int i = 0; i < TypeWord_list->size; ++i)
+//    {
+//        printf("%s:\n", ((TypeWords*)current_node->data)->type);
+//
+//
+//        LL_node *inner_node = ((TypeWords*)current_node->data)->words->start;
+//
+//        for (unsigned int j = 0; j < ((TypeWords*)current_node->data)->words->size; ++j)
+//        {
+//            printf("\t%s\n", inner_node->data);
+//
+//            inner_node = inner_node->right;
+//        }
+//
+//        current_node = current_node->right;
+//    }
 
 
     fclose(words_file);
