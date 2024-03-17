@@ -8,14 +8,14 @@ As the "usage" (from running with no arguments) implies, you must provide a word
 
 ### Madlib File
 A madlib file is simply a text file that contains word keys to be filled in by the madlib solver. A word key follows the following format:
-`\<token\_name\>`
+`<token_name>`
 
 Here is an example for the the file: "My friend, \<noun\>, is a(n) \<adjective\> \<noun\> when they want to be."
 
 
 ### Word File
 A word file is a structured text file that contains line-separated key/value pairs representing the type of word to replace and the word being placed respectively. A standard pair follows the following format:
-`\<type\>:\<word\>`
+`<type>:<word>`
 
 Here is an example for the the file:
 ```
