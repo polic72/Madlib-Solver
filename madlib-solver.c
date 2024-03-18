@@ -215,7 +215,7 @@ int main(int argc, char **argv)
                     if (!strcmp(type_words->type, replace_key))
                     {
                         //Place a random word from the node here.
-                        int random_word_index = rand() % type_words->words->size;
+                        unsigned int random_word_index = rand() % type_words->words->size;
 
                         LL_node *working_node = type_words->words->start;
 
